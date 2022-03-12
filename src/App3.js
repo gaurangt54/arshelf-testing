@@ -228,7 +228,7 @@ function App3() {
           :<Container>
             <div style={{textAlign:"center"}}>
                 
-                <button onClick={download}>Download</button><br/>
+                <button onClick={download}>Download</button>
                 {meshes && meshes.length!=0?
                   meshes.map((mesh)=>(
                     <button style={part===mesh?{backgroundColor:"#ffff00"}:null} onClick={()=>{setPart(mesh)}}>{mesh}</button>
