@@ -32,8 +32,7 @@ function App3() {
     const material = new THREE.MeshStandardMaterial({color: 0x777777});
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize( (window.innerWidth * 1), (window.innerHeight * 0.8) );
-    //renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
 
     const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.61);
