@@ -20,6 +20,7 @@ function App3() {
     
     const [model, setModel] = useState();
     const [arlink, setArlink] = useState();
+    let h = Math.ceil(0.8 * window.innerHeight)
 
     let m = [];
     const [part, setPart] = useState();
@@ -32,7 +33,7 @@ function App3() {
     const material = new THREE.MeshStandardMaterial({color: 0x777777});
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(window.innerWidth, 350);
     renderer.shadowMap.enabled = true;
 
     const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.61);
@@ -120,7 +121,7 @@ function App3() {
       const needResize =
           canvasPixelWidth !== width || canvasPixelHeight !== height;
       if (needResize) {
-          renderer.setSize(width, height, false);
+          renderer.setSize(width, 350, false);
       }
       return needResize;
   }
@@ -246,7 +247,7 @@ function App3() {
                   
                 </Row>
             </div>
-            <div id="obj" style={{height:"80vh"}}></div>
+            <div id="obj" style={{height:"70vh"}}></div>
             </Container>
             }
         </div>
