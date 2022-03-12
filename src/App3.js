@@ -47,7 +47,7 @@ function App3() {
     dirLight.name = 'DirectionalLight';
     scene.add( dirLight );
 
-    const MODEL_PATH = 'chair.glb';
+    const MODEL_PATH = './chair.glb';
     console.log(MODEL_PATH)
 
     var loader = new GLTFLoader();
