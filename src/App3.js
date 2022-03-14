@@ -12,7 +12,7 @@ import "./App.css";
 import { useState, useEffect } from "react";
 
 function App3() {
-    var camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10);
+    var camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 800);
     camera.position.z = 8; //Farness
 
     var loaded = false;
@@ -33,7 +33,7 @@ function App3() {
     const material = new THREE.MeshStandardMaterial({color: 0x777777});
 
     const renderer = new THREE.WebGLRenderer({ antialias: false });
-    renderer.setSize(300, 300);
+    renderer.setSize(window.innerWidth, 350);
     renderer.shadowMap.enabled = true;
 
     renderer.getContext().canvas.addEventListener("webglcontextlost", function(event) {
@@ -59,7 +59,7 @@ function App3() {
     dirLight.name = 'DirectionalLight';
     scene.add( dirLight );
 
-    const MODEL_PATH = './chair.glb';
+    const MODEL_PATH = './chair2.glb';
 
     var loader = new GLTFLoader();
     useEffect(()=>{
@@ -226,13 +226,33 @@ function App3() {
     }
 
     const setPart = (mesh) => {
-      if(part)
-        document.getElementById(`${part}`).style.backgroundColor = 'white';
+      if(part){
+        document.getElementById(`${part}`).style.backgroundColor = '#b3b3b3';
+        document.getElementById(`${part}`).style.borderColor = '#b3b3b3';
+        document.getElementById(`${part}`).style.color = '#000000';
+      }
       part = mesh;
       console.log(part)
-      document.getElementById(`${mesh}`).style.backgroundColor = 'red';
+      document.getElementById(`${mesh}`).style.backgroundColor = '#333333';
+      document.getElementById(`${mesh}`).style.borderColor = '#333333';
+      document.getElementById(`${mesh}`).style.color = '#ffffff';
     }
    
+    const cColor = (color) => {
+      let new_mtl = new THREE.MeshStandardMaterial({
+        color: parseInt('0x' + color.substring(1)),
+        //shininess: color.shininess ? color.shininess : 10
+      })
+
+      model.traverse(o => {
+        if(o.isMesh && o.nameID!= null){
+        if(o.name==part){
+          o.material=new_mtl
+        }
+      }
+      });
+
+    }
 
     return (
         <div className="App">
@@ -241,29 +261,35 @@ function App3() {
             <h2>Model Viewer</h2>
             <model-viewer style={{height:"500px",width:"100%",backgroundColor:"#17171A!important"}} src={arlink} ios-src={arlink} ar alt='A 3D model of a robot' camera-orbit="-90deg" auto-rotate='' camera-controls='' background-color='#455A64'></model-viewer>
           </div>
-          :<Container>
-            <div style={{textAlign:"center"}}>
+          :<div>
+            <div className="row mx-3 color-pallete">
+              {colors && colors.length!==0?
+              colors.map((color,index)=>(
+                <div key={index} className="choose-color" 
+                style={color.texture?{backgroundImage:`url(${color.texture})`}:{backgroundColor:`#${color.color}`}} 
+                onClick={()=>changeColor(color)}
+                />
+              ))
+              :null}
+              <br/>
+            </div>
+            <div className="mx-3">
+            Select Custom Color from this input: <input type="color" className="choose-color" onChange={(e)=>{cColor(e.target.value)}} />
+
+            </div>
+
+            <div id="obj" style={{height:"55vh"}}></div>
+            <div style={{textAlign:"center" , padding:"1rem"}}>
                 <div id="selected-part"></div>
-                <button onClick={download}>Download</button>
                 {meshes && meshes.length!=0?
                   meshes.map((mesh)=>(
-                    <button className="btn-parts" style={part===mesh?{backgroundColor:"#ffff00"}:null} id={`${mesh}`} onClick={()=>{setPart(mesh)}}>{mesh}</button>
+                    <button className="btn m-1" style={{backgroundColor:"#b3b3b3"}} id={`${mesh}`} onClick={()=>{setPart(mesh)}}>{mesh}</button>
                   ))
                 :null}
-                <Row>
-                  {colors && colors.length!==0?
-                  colors.map((color,index)=>(
-                    <Col className="choose-color" 
-                    style={color.texture?{backgroundImage:`url(${color.texture})`}:{backgroundColor:`#${color.color}`}} 
-                    onClick={()=>changeColor(color)}
-                    />
-                  ))
-                  :null}
-                  
-                </Row>
+                <br/> 
+                <button className="btn btn-proceed btn-block m-2" onClick={download}>Proceed</button>
             </div>
-            <div id="obj" style={{height:"70vh"}}></div>
-            </Container>
+            </div>
             }
         </div>
     );
