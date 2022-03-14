@@ -20,10 +20,10 @@ function App3() {
     
     const [model, setModel] = useState();
     const [arlink, setArlink] = useState();
-    let h = Math.ceil(0.8 * window.innerHeight)
 
     let m = [];
-    const [part, setPart] = useState();
+    let part;
+    const [part1, setPart1] = useState();
     const [meshes, setMeshes] = useState();
 
     const [initScene, setScene] = useState();
@@ -32,9 +32,21 @@ function App3() {
 
     const material = new THREE.MeshStandardMaterial({color: 0x777777});
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, 350);
+    const renderer = new THREE.WebGLRenderer({ antialias: false });
+    renderer.setSize(300, 300);
     renderer.shadowMap.enabled = true;
+
+    renderer.getContext().canvas.addEventListener("webglcontextlost", function(event) {
+      console.log("Context Lost Function", event)
+      event.preventDefault();
+      // animationID would have been set by your call to requestAnimationFrame
+      cancelAnimationFrame(animate); 
+  }, true);
+  
+  renderer.getContext().canvas.addEventListener("webglcontextrestored", function(event) {
+    console.log("Context Restore Function", event)
+     // Do something 
+  }, false);
 
     const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.61);
     hemiLight.position.set(0, 50, 0);
@@ -48,10 +60,11 @@ function App3() {
     scene.add( dirLight );
 
     const MODEL_PATH = './chair.glb';
-    console.log(MODEL_PATH)
 
     var loader = new GLTFLoader();
     useEffect(()=>{
+      if(!loaded){
+
       loader.load(MODEL_PATH, function(gltf){
         console.log("Loader", scene)
         var theModel = gltf.scene;
@@ -77,12 +90,9 @@ function App3() {
       });
 
       animate();
-      
+      }
     }, [])
-
-    console.log(model)
     
-
     var controls = new OrbitControls(camera, renderer.domElement);
     controls.maxPolarAngle = Math.PI / 2;
     controls.minPolarAngle = Math.PI / 3;
@@ -109,8 +119,6 @@ function App3() {
         }
     }
 
-    
-
     function resizeRendererToDisplaySize(renderer) {
       const canvas = renderer.domElement;
       var width = window.innerWidth;
@@ -120,27 +128,28 @@ function App3() {
 
       const needResize =
           canvasPixelWidth !== width || canvasPixelHeight !== height;
-      if (needResize) {
-          renderer.setSize(width, 350, false);
-      }
+      // if (needResize) {
+      //     renderer.setSize(width, 350, false);
+      // }
       return needResize;
   }
 
-  function initialRotation() {
-    initRotate++;
-    if (initRotate <= 120) {
-        model.rotation.y += Math.PI / 60;
-    } else {
-        loaded = true;
+    function initialRotation() {
+      initRotate++;
+      if (initRotate <= 120) {
+          model.rotation.y += Math.PI / 60;
+      } else {
+          loaded = true;
+      }
     }
-}
  
-
     useEffect(() => {
         const r = renderer.domElement;
-        if(document.getElementById("obj"))
-        document.getElementById("obj").appendChild(r);
-        
+        const t = document.getElementById("obj")
+        if(!model && t){
+          t.appendChild(r);
+          console.log("Obj", renderer)
+        }
     }, [renderer]);
 
 
@@ -168,7 +177,6 @@ function App3() {
     const link = document.createElement("a");
     link.style.display = "none";
     document.body.appendChild(link);
-    console.log("Link",link)
 
     function saveArrayBuffer(buffer, fileName) {
         save(new Blob([buffer], { type: "model/gltf-binary" }), fileName);
@@ -182,7 +190,6 @@ function App3() {
         console.log("Blob" ,blob)
         link.href = URL.createObjectURL(blob);
         link.download = fileName;
-        // link.click();
         console.log(link.href)
         setArlink(link.href)
     }
@@ -217,6 +224,14 @@ function App3() {
     });
     
     }
+
+    const setPart = (mesh) => {
+      if(part)
+        document.getElementById(`${part}`).style.backgroundColor = 'white';
+      part = mesh;
+      console.log(part)
+      document.getElementById(`${mesh}`).style.backgroundColor = 'red';
+    }
    
 
     return (
@@ -228,11 +243,11 @@ function App3() {
           </div>
           :<Container>
             <div style={{textAlign:"center"}}>
-                
+                <div id="selected-part"></div>
                 <button onClick={download}>Download</button>
                 {meshes && meshes.length!=0?
                   meshes.map((mesh)=>(
-                    <button style={part===mesh?{backgroundColor:"#ffff00"}:null} onClick={()=>{setPart(mesh)}}>{mesh}</button>
+                    <button className="btn-parts" style={part===mesh?{backgroundColor:"#ffff00"}:null} id={`${mesh}`} onClick={()=>{setPart(mesh)}}>{mesh}</button>
                   ))
                 :null}
                 <Row>
