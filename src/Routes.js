@@ -9,7 +9,7 @@ function Routes() {
     <BrowserRouter>
         {/* <Route exact path="/" component={App} /> */}
         <Route exact path="/app2" component={App2} />
-        <Route exact path="/app3/:ar" component={App3} />
+        <Route exact path="/app3" component={App3} />
 
     </BrowserRouter> 
   )

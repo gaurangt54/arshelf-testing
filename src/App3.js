@@ -11,7 +11,7 @@ import chair from "./chair3.glb"
 import "./App.css";
 import { useState, useEffect } from "react";
 
-function App3(props) {
+function App3() {
     var camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 60);
     camera.position.z = 5; //Farness
 
@@ -58,8 +58,7 @@ function App3(props) {
     dirLight.name = 'DirectionalLight';
     scene.add( dirLight );
 
-    const a = props.match.params.ar;
-    const MODEL_PATH = a? a:'./chair1.glb';
+    const MODEL_PATH = './chair.glb';
 
     var loader = new GLTFLoader();
     useEffect(()=>{
@@ -75,7 +74,7 @@ function App3(props) {
           o.nameID = o.name; 
           o.castShadow = true;
           o.receiveShadow = true;
-          o.material = material;
+          // o.material = material;
           }
         });
         theModel.scale.set(2, 2, 2);
