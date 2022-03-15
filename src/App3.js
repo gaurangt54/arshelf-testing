@@ -59,7 +59,7 @@ function App3(props) {
     scene.add( dirLight );
 
     const a = props.match.params.ar;
-    const MODEL_PATH = a? a:'./chair1.glb';
+    const MODEL_PATH = a? `https://res.cloudinary.com/gaurangt54/image/upload/v1646065356/ArFiles/${a}`:'./chair1.glb';
     console.log(a)
     console.log(MODEL_PATH)
 
