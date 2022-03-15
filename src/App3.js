@@ -58,11 +58,13 @@ function App3(props) {
     dirLight.name = 'DirectionalLight';
     scene.add( dirLight );
 
-    const a = props.match.params.ar;
-    const MODEL_PATH = a? `https://res.cloudinary.com/gaurangt54/image/upload/v1646065356/ArFiles/${a}`:'./chair1.glb';
-    console.log(a)
-    console.log(MODEL_PATH)
-    console.log(colors)
+    // const a = props.match.params.ar;
+    // const MODEL_PATH = a? `https://res.cloudinary.com/gaurangt54/image/upload/v1646065356/ArFiles/${a}`:'./chair1.glb';
+    // console.log(a)
+    // console.log(MODEL_PATH)
+    // console.log(colors)
+
+    const MODEL_PATH = "./chair1.glb"
 
     var loader = new GLTFLoader();
     useEffect(()=>{
