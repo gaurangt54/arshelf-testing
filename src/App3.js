@@ -11,9 +11,9 @@ import chair from "./chair3.glb"
 import "./App.css";
 import { useState, useEffect } from "react";
 
-function App3() {
-    var camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 800);
-    camera.position.z = 8; //Farness
+function App3(props) {
+    var camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 60);
+    camera.position.z = 5; //Farness
 
     var loaded = false;
     let initRotate = 0;
@@ -23,7 +23,6 @@ function App3() {
 
     let m = [];
     let part;
-    const [part1, setPart1] = useState();
     const [meshes, setMeshes] = useState();
 
     const [initScene, setScene] = useState();
@@ -36,17 +35,17 @@ function App3() {
     renderer.setSize(window.innerWidth, 350);
     renderer.shadowMap.enabled = true;
 
-    renderer.getContext().canvas.addEventListener("webglcontextlost", function(event) {
-      console.log("Context Lost Function", event)
-      event.preventDefault();
-      // animationID would have been set by your call to requestAnimationFrame
-      cancelAnimationFrame(animate); 
-  }, true);
+  //   renderer.getContext().canvas.addEventListener("webglcontextlost", function(event) {
+  //     console.log("Context Lost Function", event)
+  //     event.preventDefault();
+  //     // animationID would have been set by your call to requestAnimationFrame
+  //     cancelAnimationFrame(animate); 
+  // }, true);
   
-  renderer.getContext().canvas.addEventListener("webglcontextrestored", function(event) {
-    console.log("Context Restore Function", event)
-     // Do something 
-  }, false);
+  // renderer.getContext().canvas.addEventListener("webglcontextrestored", function(event) {
+  //   console.log("Context Restore Function", event)
+  //    // Do something 
+  // }, false);
 
     const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.61);
     hemiLight.position.set(0, 50, 0);
@@ -59,7 +58,8 @@ function App3() {
     dirLight.name = 'DirectionalLight';
     scene.add( dirLight );
 
-    const MODEL_PATH = './chair.glb';
+    const a = props.match.params.ar;
+    const MODEL_PATH = a? a:'./chair1.glb';
 
     var loader = new GLTFLoader();
     useEffect(()=>{
