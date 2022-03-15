@@ -1,18 +1,18 @@
 export const colors = [
     {
-        texture: "img/wood_.jpg",
+        texture: "https://res.cloudinary.com/gaurangt54/image/upload/v1647331514/ArFiles/wood__opod3i.jpg",
         size: [2, 2, 2],
         shininess: 60,
     },
 
     {
-        texture: "img/fabric_.jpg",
+        texture: "https://res.cloudinary.com/gaurangt54/image/upload/v1647331514/ArFiles/fabric__ykggdt.jpg",
         size: [4, 4, 4],
         shininess: 0,
     },
 
     {
-        texture: "img/denim_.jpg",
+        texture: "https://res.cloudinary.com/gaurangt54/image/upload/v1647331514/ArFiles/denim__u1to16.jpg",
         size: [3, 3, 3],
         shininess: 0,
     },
