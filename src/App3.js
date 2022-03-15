@@ -62,6 +62,7 @@ function App3(props) {
     const MODEL_PATH = a? `https://res.cloudinary.com/gaurangt54/image/upload/v1646065356/ArFiles/${a}`:'./chair1.glb';
     console.log(a)
     console.log(MODEL_PATH)
+    console.log(colors)
 
     var loader = new GLTFLoader();
     useEffect(()=>{
