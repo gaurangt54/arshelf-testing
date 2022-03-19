@@ -35,24 +35,12 @@ function App3(props) {
     renderer.setSize(window.innerWidth, 350);
     renderer.shadowMap.enabled = true;
 
-  //   renderer.getContext().canvas.addEventListener("webglcontextlost", function(event) {
-  //     console.log("Context Lost Function", event)
-  //     event.preventDefault();
-  //     // animationID would have been set by your call to requestAnimationFrame
-  //     cancelAnimationFrame(animate); 
-  // }, true);
-  
-  // renderer.getContext().canvas.addEventListener("webglcontextrestored", function(event) {
-  //   console.log("Context Restore Function", event)
-  //    // Do something 
-  // }, false);
-
     const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.61);
     hemiLight.position.set(0, 50, 0);
     scene.add(hemiLight);
 
-    const dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
-    dirLight.target.position.set( 0, 0, - 1 );
+    const dirLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+    dirLight.target.position.set( 0, 0, -1 );
     dirLight.add( dirLight.target );
     dirLight.lookAt( -1,-1, 0 );
     dirLight.name = 'DirectionalLight';
@@ -83,9 +71,9 @@ function App3(props) {
           o.material = material;
           }
         });
-        theModel.scale.set(2, 2, 2);
+        theModel.scale.set(1, 1, 1);
         theModel.rotation.y = Math.PI;
-        theModel.position.y = -1;
+        theModel.position.y = 0;
         scene.add(theModel);
         setModel(theModel);
         setMeshes(m)

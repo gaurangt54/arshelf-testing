@@ -7,7 +7,7 @@ import App from './App'
 function Routes() {
   return (
     <BrowserRouter>
-        {/* <Route exact path="/" component={App} /> */}
+        <Route exact path="/" component={App} />
         <Route exact path="/app2" component={App2} />
         <Route exact path="/app3/:ar" component={App3} />
 
