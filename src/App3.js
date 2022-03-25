@@ -3,15 +3,15 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter";
 
-import { Row, Col, Container } from "react-bootstrap";
-
 import { colors } from "./colors1";
-import chair from "./chair3.glb"
+
+import { Context } from "./Context.js";
 
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 function App3(props) {
+    document.title = "Color Customizer"
     var camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 60);
     camera.position.z = 5; //Farness
 
@@ -20,6 +20,7 @@ function App3(props) {
     
     const [model, setModel] = useState();
     const [arlink, setArlink] = useState();
+    const [mainScene, getScene] = useContext(Context);
 
     let m = [];
     let part;
@@ -31,7 +32,7 @@ function App3(props) {
 
     const material = new THREE.MeshStandardMaterial({color: 0x777777});
 
-    const renderer = new THREE.WebGLRenderer({ antialias: false });
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, 350);
     renderer.shadowMap.enabled = true;
 
@@ -46,34 +47,28 @@ function App3(props) {
     dirLight.name = 'DirectionalLight';
     scene.add( dirLight );
 
-    const a = props.match.params.ar;
-    const MODEL_PATH = a? `https://res.cloudinary.com/gaurangt54/image/upload/v1646065356/ArFiles/${a}`:'./chair1.glb';
-    console.log(a)
-    console.log(MODEL_PATH)
-    console.log(colors)
-
-    // const MODEL_PATH = "./chair1.glb"
+    const MODEL_PATH = "chair1_lightbrown.glb"
 
     var loader = new GLTFLoader();
     useEffect(()=>{
       if(!loaded){
 
       loader.load(MODEL_PATH, function(gltf){
-        console.log("Loader", scene)
+        console.log("Loader", gltf.scene)
         var theModel = gltf.scene;
+        console.log(theModel.children)
         theModel.traverse(o => {
-
           if (o.isMesh) {
             m.push(o.name)
           o.nameID = o.name; 
           o.castShadow = true;
           o.receiveShadow = true;
-          o.material = material;
+          // o.material = material;
           }
         });
-        theModel.scale.set(1, 1, 1);
-        theModel.rotation.y = Math.PI;
-        theModel.position.y = 0;
+        // theModel.scale.set(2, 2, 2);
+        // theModel.rotation.y = Math.PI;
+        // theModel.position.y = -1;
         scene.add(theModel);
         setModel(theModel);
         setMeshes(m)
@@ -148,9 +143,10 @@ function App3(props) {
 
     const download = () => {
         const exporter = new GLTFExporter();
-        console.log("Download", initScene);
+        getScene(initScene)
+        console.log("Download", model);
         exporter.parse(
-          initScene,
+          model,
             function (result) {
                 if (result instanceof ArrayBuffer) {
                     saveArrayBuffer(result, "scene.glb");
@@ -183,8 +179,7 @@ function App3(props) {
         console.log("Blob" ,blob)
         link.href = URL.createObjectURL(blob);
         link.download = fileName;
-        console.log(link.href)
-        setArlink(link.href)
+        link.click();
     }
     
     const changeColor = (color) => {

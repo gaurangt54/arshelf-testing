@@ -56,4 +56,27 @@ export const colors = [
     {
         color: "75C8C6",
     },
+
+    {
+        color: "FFFFFF",
+    },
+
+    {
+        color: "000000",
+    },
+
+    {
+        color: "555555",
+    },
+
+    {
+        color: "663300",
+    },
+    {
+        color: "1a0d00",
+    },
+    {
+        color: "cccccc",
+    },
+
 ];
